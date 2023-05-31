@@ -1,4 +1,4 @@
-modules.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
     const Product = sequelize.define('product', {
         cod: {
             type: DataTypes.INTEGER,
@@ -30,17 +30,19 @@ modules.exports = (sequelize, DataTypes) => {
         },
         supplier: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
             validate: {
                 notEmpty: false
             }
         },
         category: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
             validate: {
                 notEmpty: false
             }
         },
     });
+
+    return Product;
 };
