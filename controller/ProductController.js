@@ -1,29 +1,30 @@
-const { Product } = require('../models');
+const db = require('../models');
+const { product } = require('../models');
 
 module.exports = {
     create: async (req, res) => {
         let id = '';
-        let result = await Product.create({
+        await product.create({
             cod: '21341325',
             description: 'teste',
-            price: 1
+            price: 1,
+            cost: 1
         }).then(function(e){
-            console.log(e);
-            id = e;
+            res.send(e);
         }).catch((err) => {
             if(err){
                 console.log(err);
             }
         });
         
-        res.send(result);
+        // res.send(result);
     },
 
     list: async (req, res) => {
-        let result = await Product.findAll().then(function(e){
+        let result = await product.findAll().then(function(e){
             console.log(e);
+            res.send(e);
         })
         
-        res.send(result);
     },
 }
