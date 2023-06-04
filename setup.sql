@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `payment_method` (
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `market` (
+CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT, 
   `name` varchar(40),
   `company` varchar(11),
