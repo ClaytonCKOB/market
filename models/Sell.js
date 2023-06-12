@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
         id: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            primaryKey: true,
             validate: {
                 notEmpty: false
             }
@@ -50,14 +51,14 @@ module.exports = (sequelize, DataTypes) => {
         },
       
         date: {
-            type: DataTypes.DATETIME,
+            type: DataTypes.DATE,
             allowNull: true,
             validate: {
                 notEmpty: true
             }
         },
       
-        payment_method,id: {
+        payment_method: {
             type: DataTypes.INTEGER,
             allowNull: true,
             validate: {

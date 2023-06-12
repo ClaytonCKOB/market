@@ -25,6 +25,19 @@ module.exports = {
             console.log(e);
             res.send(e);
         })
-        
+    },
+
+    get: async (req, res) => {
+        let result = await product.findAll().then(function(e){
+            console.log(e);
+            res.send(e);
+        })
+    },
+
+    delete: async (req, res) => {
+        let result = await product.findAll().then(function(e){
+            console.log(e);
+            res.send(e);
+        })
     },
 }

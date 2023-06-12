@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
         cod: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            primaryKey: true,
             validate: {
                 notEmpty: true
             }
