@@ -23,12 +23,41 @@ function App() {
 
   useEffect(() => getData, []);
 
+  const subtotal = products?.reduce((acc, product) => acc + product.price, 0);
+  const discount = 0;
+  const total = subtotal - discount;
+
   return <div className="app">
     <header className="app-header">
       <h1>Produtos</h1> 
     </header>
-    < ListHeader/>
-    { products?.map((product) => ( <ListItem key={product.id} product={product} /> ))}
+    <div className="app-content">
+      <div className="list-container">
+        < ListHeader/>
+        { products?.map((product) => ( <ListItem key={product.id} product={product} /> ))}
+      </div>
+      <div className="info-box">
+        <div className="info-box-subtotal">
+          <h1>Subtotal</h1>
+          <p>R$ {subtotal}</p>
+        </div>
+        <div className="info-box-discount">
+          <h1>Desconto</h1>
+          <p>R$ {discount}</p>
+        </div>
+        <div className="info-box-total">
+          <h1>Total</h1>
+          <p>R$ {total}</p>
+        </div>
+      </div>
+
+    </div>
+    
+    <footer className="app-footer">
+      <button>F1  Menu</button>
+      <button>F2  Adicionar produto</button>
+      <button>F3  Finalizar compra</button>
+    </footer>
   </div>;
 }
 

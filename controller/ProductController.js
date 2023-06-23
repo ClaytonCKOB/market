@@ -40,4 +40,30 @@ module.exports = {
             res.send(e);
         })
     },
+
+    createTestRecords: async (req, res) => {
+        const products = [];
+
+        for(let i = 0; i < 50; i++){
+            products.push({
+                cod: '2000000'+i,
+                description: 'Test product ' + i,
+                price: i,
+                cost: i
+            })
+        }
+
+        product.bulkCreate(products).then(
+            function(e){
+                return res.send(e);
+            }
+        ).catch((err) => {
+            if(err){
+                console.log(err);
+            }
+        });
+
+
+
+    }
 }
