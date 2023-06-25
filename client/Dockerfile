@@ -3,5 +3,5 @@ WORKDIR /app
 COPY package.json ./
 COPY package-lock.json ./
 COPY ./ ./
-RUN npm i
+RUN npm install
 CMD [ -d "node_modules" ] && npm run start || npm ci && npm run start

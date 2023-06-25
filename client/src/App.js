@@ -1,6 +1,7 @@
 import ListHeader from "./components/ListHeader";
 import ListItem from "./components/ListItem";
 import React, { useEffect, useState } from "react";
+import Axios from "axios";
 
 
 
@@ -13,6 +14,30 @@ function App() {
     try {
       const response = await fetch("http://localhost:3050/api/product/list/");
       const data = await response.json();
+
+      // Exemplos de uso de requisicoes axios
+      Axios.post('/api/product/create', {
+        cod: '12345',
+        description: 'bolacha',
+        price: 1.4,
+        cost: 4.6,
+        supplier: 2,
+        category: 1
+      }).then((e)=>{
+        console.log(e);
+      });
+
+      Axios.get('/api/product/get', {
+        params:{
+          id: '12345'
+        }
+      }).then((e)=>{
+        console.log(e);
+      });
+
+      // Axios.delete('/api/product/delete/12345').then((e)=>{
+      //   console.log(e);
+      // });
 
       setProducts(data);
       

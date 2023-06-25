@@ -3,42 +3,45 @@ const { product } = require('../models');
 
 module.exports = {
     create: async (req, res) => {
-        let id = '';
         await product.create({
-            cod: '21341325',
-            description: 'teste',
-            price: 1,
-            cost: 1
+            cod: req.body.cod,
+            description: req.body.description,
+            price: req.body.price,
+            cost: req.body.cost
         }).then(function(e){
-            res.send(e);
+            res.send(e.id);
         }).catch((err) => {
-            if(err){
-                console.log(err);
-            }
+            console.log(err);
         });
-        
-        // res.send(result);
     },
 
     list: async (req, res) => {
-        let result = await product.findAll().then(function(e){
-            console.log(e);
+        await product.findAll().then(function(e){
             res.send(e);
+        }).catch((err) => {
+            console.log(err);
         })
     },
 
     get: async (req, res) => {
-        let result = await product.findAll().then(function(e){
-            console.log(e);
+        await product.findByPk(req.query.id)
+        .then(function(e){
             res.send(e);
-        })
+        }).catch((err) => {
+            console.log(err);
+        });
     },
 
     delete: async (req, res) => {
-        let result = await product.findAll().then(function(e){
-            console.log(e);
-            res.send(e);
-        })
+        
+        let record = await product.findByPk(req.params.id);
+
+        if (record) {
+        await record.destroy();
+            res.status(204).send();
+        } else {
+            res.status(404).json({ error: 'Record not found' });
+        }
     },
 
     createTestRecords: async (req, res) => {
