@@ -4,4 +4,4 @@ COPY package.json ./
 COPY package-lock.json ./
 COPY ./ ./
 RUN npm i
-CMD ["npm", "run", "start"]
+CMD [ -d "node_modules" ] && npm run start || npm ci && npm run start
