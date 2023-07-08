@@ -49,7 +49,7 @@ module.exports = {
 
         for(let i = 0; i < 50; i++){
             products.push({
-                cod: '2000000'+i,
+                cod: (2000000+i).toString(),
                 description: 'Test product ' + i,
                 price: i,
                 cost: i

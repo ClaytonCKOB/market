@@ -1,43 +1,56 @@
 import ListHeader from "./components/ListHeader";
 import ListItem from "./components/ListItem";
 import React, { useEffect, useState } from "react";
-import Axios from "axios";
-
-
-
+import Modal from "./components/Modal";
+import AddItemForm from "./components/AddItemForm";
 
 function App() {
+  
+  const [products, setProducts] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [modalContent, setModalContent] = useState(false);
 
-  const [products, setProducts] = useState(null);
+  const handleKeyPress = (event) => {
+    const keyCode = event.keyCode || event.which;
+
+    switch (keyCode) {
+      case 112: // F1 key
+        break;
+      case 113: // F2 key
+      handleButtonClick(<AddItemForm onSubmit={handleAddItem} />)
+        break;
+      case 114: // F3 key
+        break;
+      default:
+        break;
+    }
+  }
+
+  document.addEventListener('keydown', handleKeyPress);
+
+  
+
+  const handleAddItem = (code) => {
+    fetch("http://localhost:3050/api/product/get?"+ new URLSearchParams({
+      id: code
+    }))
+    .then((response) => response.json())
+    .then((data) => {
+      setProducts((prevProducts) => [...prevProducts, data]);
+      return 'success';
+    })
+    .catch((error) => {
+      console.error("Error fetching product:", error);
+      return 'error';
+    });
+
+
+  }
 
   const getData = async () => {
     try {
       const response = await fetch("http://localhost:3050/api/product/list/");
       const data = await response.json();
-
-      // Exemplos de uso de requisicoes axios
-      Axios.post('/api/product/create', {
-        cod: '12345',
-        description: 'bolacha',
-        price: 1.4,
-        cost: 4.6,
-        supplier: 2,
-        category: 1
-      }).then((e)=>{
-        console.log(e);
-      });
-
-      Axios.get('/api/product/get', {
-        params:{
-          id: '12345'
-        }
-      }).then((e)=>{
-        console.log(e);
-      });
-
-      // Axios.delete('/api/product/delete/12345').then((e)=>{
-      //   console.log(e);
-      // });
 
       setProducts(data);
       
@@ -46,7 +59,12 @@ function App() {
     }
   };
 
-  useEffect(() => getData, []);
+  const handleButtonClick = (content) => {
+    setOpenModal(true);
+    setModalContent(content);
+  }
+
+  //useEffect(() => getData, []);
 
   const subtotal = products?.reduce((acc, product) => acc + product.price, 0);
   const discount = 0;
@@ -80,9 +98,12 @@ function App() {
     
     <footer className="app-footer">
       <button>F1  Menu</button>
-      <button>F2  Adicionar produto</button>
+      <button onClick={() => handleButtonClick(<AddItemForm onSubmit={handleAddItem} />)}>F2  Adicionar produto</button>
       <button>F3  Finalizar compra</button>
     </footer>
+
+
+    <Modal children={modalContent} isOpen={openModal} setCloseModal={() => setOpenModal(!openModal)} />
   </div>;
 }
 
