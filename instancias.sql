@@ -1,8 +1,8 @@
 delimiter \\
 
-drop database market;
-create database market;
-use market;
+drop database if exists mercado;
+create database mercado;
+use mercado;
 
 CREATE TABLE IF NOT EXISTS categorias (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS produtos (
 	custo FLOAT(6, 2) NOT NULL,
 	preco FLOAT(6, 2) NOT NULL,
 	categoria INT UNSIGNED,
-	desconto FLOAT(6,2),
+	desconto FLOAT(6,2) DEFAULT 0,
 	PRIMARY KEY (cod_barras),
 	FOREIGN KEY (categoria) 
 		REFERENCES categorias(id)
@@ -62,15 +62,17 @@ CREATE TABLE IF NOT EXISTS clientes (
 	nome VARCHAR(40) NOT NULL,
 	cpf VARCHAR(11) UNIQUE NOT NULL,
 	endereco VARCHAR(30) NOT NULL,
+    limite_credito FLOAT(6,2) NOT NULL DEFAULT 0,
 	email VARCHAR(40),
 	telefone VARCHAR(11),
-	receber_oferta BOOLEAN,
-	PRIMARY KEY (id)
+    receber_ofertas boolean,
+	PRIMARY KEY (id),
+    check(limite_credito >= 0)
 );
 
 CREATE TABLE IF NOT EXISTS turnos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nome VARCHAR(30),
+	nome VARCHAR(30) UNIQUE,
 	inicio TIME,
 	fim TIME,
 	PRIMARY KEY (id)
@@ -83,8 +85,8 @@ CREATE TABLE IF NOT EXISTS funcionarios (
 	nome VARCHAR(40) NOT NULL,
 	CNH VARCHAR (11) UNIQUE,
     turno INT UNSIGNED,
-	usuario VARCHAR(40) UNIQUE,
-	senha VARCHAR(40),
+	usuario VARCHAR(40) UNIQUE DEFAULT NULL,
+	senha VARCHAR(40) DEFAULT NULL,
 	PRIMARY KEY (id),
     FOREIGN KEY (turno) 
 		REFERENCES turnos(id)
@@ -104,11 +106,11 @@ CREATE TABLE IF NOT EXISTS veiculos (
 
 CREATE TABLE IF NOT EXISTS vendas (
 	nota_fiscal INT UNSIGNED NOT NULL,
-	cliente INT UNSIGNED,
 	data DATETIME NOT NULL,
     vendedor  INT UNSIGNED NOT NULL,
-    entregador VARCHAR (11),
-    veiculo INT UNSIGNED,
+    cliente INT UNSIGNED DEFAULT NULL,
+    entregador VARCHAR (11) DEFAULT NULL,
+    veiculo INT UNSIGNED DEFAULT NULL,
 	PRIMARY KEY (nota_fiscal),
 	FOREIGN KEY (cliente) REFERENCES clientes(id),
     FOREIGN KEY (vendedor) REFERENCES funcionarios(id),
@@ -167,7 +169,8 @@ INSERT INTO metodo_pagamentos (nome) VALUES
 ('Cartão de Débito'),
 ('Pix'),
 ('Transferência Bancária'),
-('Vale alimentação');
+('Vale alimentação'),
+('Crédito');
 
 INSERT INTO fornecedores (nome, telefone, email, cpf_cnpj) VALUES
 ('Fornecedor A', '1234567890', 'fornecedorA@example.com','10301031010'),
@@ -187,9 +190,9 @@ INSERT INTO produtos (descricao, custo, preco, desconto, categoria) VALUES
 ('Smartphone', 200.00, 300.00, 0, 5),
 ('Mouse', 10.00, 15.00, 0, 5);
 
-INSERT INTO clientes (nome, cpf, endereco, telefone, email) VALUES
-('João da Silva', '12345678901', 'Rua A, 123', '987654321', 'joao@example.com'),
-('Maria Oliveira', '98765432101', 'Avenida B, 456', '123456789', 'maria@example.com');
+INSERT INTO clientes (nome, cpf, endereco, telefone, email,limite_credito) VALUES
+('João da Silva', '12345678901', 'Rua A, 123', '987654321', 'joao@example.com',1500),
+('Maria Oliveira', '98765432101', 'Avenida B, 456', '123456789', 'maria@example.com',0);
 
 INSERT INTO turnos (nome, inicio, fim) VALUES
 ('Integral','08:00:00', '18:00:00'),
@@ -228,7 +231,8 @@ INSERT INTO veiculos(CRV ,placa, modelo, cor) VALUES
 INSERT INTO vendas (nota_fiscal, cliente, data, vendedor, entregador, veiculo) VALUES
 (0, 1, NOW(), 3,'12345678910', 2),
 (1, 2, NOW(), 3,'12342923910', 1),
-(2, null, NOW(),4, null , null);
+(2, null, NOW(),4, null , null),
+(3, 1, NOW(),4,'12342923910', 2);
 
 INSERT INTO carrinhos(venda,produto,quantidade) VALUES
 (0,2,3),
@@ -244,11 +248,18 @@ INSERT INTO carrinhos(venda,produto,quantidade) VALUES
 (2,7,2),
 (2,2,3),
 (2,1,5),
-(2,9,1);
--- select nota_fiscal, SUM(valor_final) from resumo_carrinhos group by nota_fiscal order by nota_fiscal 
+(2,9,1),
+(3,3,3),
+(3,2,2),
+(3,1,1),
+(3,9,1),
+(3,10,1),
+(3,7,2);
+
 INSERT INTO pagamentos(metodo_pagamento, venda , valor) VALUES
 (2,0,352.08),
 (1,1,200),
 (4,1,109.5),
 (1,2,200),
-(2,2,148);
+(2,2,148),
+(7,3,330.74);
