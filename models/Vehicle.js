@@ -1,13 +1,27 @@
 module.exports = (sequelize, DataTypes) => {
-  const Category = sequelize.define("category", {
+  const Vehicle = sequelize.define("vehicle", {
     id: {
       type: DataTypes.INTEGER.UNSIGNED,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
     },
-    name: {
+    CRV: {
+      type: DataTypes.STRING(11),
+      allowNull: false,
+      unique: true,
+    },
+    license_plate: {
+      type: DataTypes.STRING(7),
+      allowNull: false,
+      unique: true,
+    },
+    model: {
       type: DataTypes.STRING(40),
+      allowNull: false,
+    },
+    color: {
+      type: DataTypes.STRING(15),
       allowNull: false,
     },
     createdAt: {
@@ -22,5 +36,5 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  return Category;
+  return Vehicle;
 };

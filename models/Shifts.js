@@ -1,15 +1,37 @@
 module.exports = (sequelize, DataTypes) => {
-  const PaymentMethod = sequelize.define("payment_method", {
+  const Shift = sequelize.define("shift", {
     id: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
-      autoIncrement: true,
       primaryKey: true,
+      autoIncrement: true,
+      validate: {
+        notEmpty: false,
+      },
     },
 
     name: {
       type: DataTypes.STRING,
       allowNull: true,
+      validate: {
+        notEmpty: true,
+      },
+    },
+
+    start: {
+      type: DataTypes.TIME,
+      allowNull: true,
+      validate: {
+        notEmpty: true,
+      },
+    },
+
+    end: {
+      type: DataTypes.TIME,
+      allowNull: true,
+      validate: {
+        notEmpty: true,
+      },
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -23,5 +45,5 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  return PaymentMethod;
+  return Shift;
 };

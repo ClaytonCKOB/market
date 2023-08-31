@@ -1,32 +1,26 @@
 module.exports = (sequelize, DataTypes) => {
-  const Payment = sequelize.define(
-    "payment",
+  const Supply = sequelize.define(
+    "supply",
     {
-      payment_method: {
+      product: {
         type: DataTypes.INTEGER.UNSIGNED,
-        primaryKey: true,
         allowNull: false,
         references: {
-          model: "payment_methods",
+          model: "products",
+          key: "cod",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      supplier: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+        references: {
+          model: "suppliers",
           key: "id",
         },
         onUpdate: "CASCADE",
-      },
-      sell: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        primaryKey: true,
-        allowNull: false,
-        references: {
-          model: "sells",
-          key: "invoice",
-        },
-        onUpdate: "CASCADE",
-      },
-      value: {
-        type: DataTypes.FLOAT(6, 2),
-        validate: {
-          min: 0,
-        },
+        onDelete: "CASCADE",
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -40,15 +34,9 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      validate: {
-        checkValor() {
-          if (this.valor <= 0) {
-            throw new Error("Value must be greater than 0.");
-          }
-        },
-      },
+      primaryKey: true,
     }
   );
 
-  return Payment;
+  return Supply;
 };

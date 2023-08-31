@@ -1,49 +1,70 @@
 module.exports = (sequelize, DataTypes) => {
-    const Product = sequelize.define('product', {
-        cod: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            primaryKey: true,
-            validate: {
-                notEmpty: true
-            }
+  const Product = sequelize.define(
+    "product",
+    {
+      cod: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+      },
+      description: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+      },
+      cost: {
+        type: DataTypes.FLOAT(6, 2),
+        allowNull: false,
+        validate: {
+          min: 0,
         },
-        description: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                notEmpty: false
+      },
+      price: {
+        type: DataTypes.FLOAT(6, 2),
+        allowNull: false,
+        validate: {
+          min: 0,
+          isGreaterThanCusto(value) {
+            if (value <= this.cost) {
+              throw new Error("Price must be greater than custo.");
             }
+          },
         },
-        cost: {
-            type: DataTypes.FLOAT,
-            allowNull: false,
-            validate: {
-                notEmpty: false
-            }
+      },
+      category: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        references: {
+          model: "categories", // Assuming your category model is named 'Categorias'
+          key: "id",
         },
-        price: {
-            type: DataTypes.FLOAT,
-            allowNull: false,
-            validate: {
-                notEmpty: false
-            }
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
+      discount: {
+        type: DataTypes.FLOAT(6, 2),
+        defaultValue: 0,
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
+      },
+    },
+    {
+      validate: {
+        checkPrecoCusto() {
+          if (this.preco <= this.custo) {
+            throw new Error("Price must be greater than custo.");
+          }
         },
-        supplier: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-            validate: {
-                notEmpty: false
-            }
-        },
-        category: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-            validate: {
-                notEmpty: false
-            }
-        },
-    });
+      },
+    }
+  );
 
-    return Product;
+  return Product;
 };

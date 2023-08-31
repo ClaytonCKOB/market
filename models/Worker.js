@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Client = sequelize.define(
-    "client",
+  const Worker = sequelize.define(
+    "worker",
     {
       id: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -8,36 +8,34 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         allowNull: false,
       },
+      cpf: {
+        type: DataTypes.STRING(11),
+        unique: true,
+        allowNull: false,
+      },
       name: {
         type: DataTypes.STRING(40),
         allowNull: false,
       },
-      cpf: {
+      CNH: {
         type: DataTypes.STRING(11),
-        allowNull: false,
         unique: true,
       },
-      address: {
-        type: DataTypes.STRING(30),
-        allowNull: false,
-      },
-      credit_limit: {
-        type: DataTypes.FLOAT(6, 2),
-        allowNull: false,
-        defaultValue: 0,
-        validate: {
-          min: 0,
+      shift: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        references: {
+          model: "shifts", // Assuming your Turno model is named 'Turno'
+          key: "id",
         },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
       },
-      email: {
+      user: {
         type: DataTypes.STRING(40),
+        unique: true,
       },
-      phone_number: {
-        type: DataTypes.STRING(11),
-      },
-      receive_offers: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
+      password: {
+        type: DataTypes.STRING(40),
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -52,14 +50,16 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       validate: {
-        checkLimiteCredito() {
-          if (this.credit_limit < 0) {
-            throw new Error("credit_limit must be greater than or equal to 0.");
+        checkUsuarioSenha() {
+          if ((this.user && !this.password) || (!this.user && this.password)) {
+            throw new Error(
+              "Both user and password must be provided together."
+            );
           }
         },
       },
     }
   );
 
-  return Client;
+  return Worker;
 };

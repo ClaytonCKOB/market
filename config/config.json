@@ -4,7 +4,13 @@
     "host": "mysql_db",
     "username": "developer",
     "password": "qwerty",
-    "database": "market"
+    "database": "market",
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
   },
   "test": {
     "username": "root",
