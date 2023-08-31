@@ -145,14 +145,14 @@ module.exports = {
   query8: async (req, res) => {
     sequelize
       .query(
-        `SELECT ven.invoice , cli.name, SUM(res.total_value),
-        SUM(res.discount) , SUM(res.final_value) , ven.data ,cli.address ,
-        worker.name, ent.name ,vei.model
+        `SELECT ven.invoice as Nota_fiscal , cli.name as Nome, SUM(res.total_value) as Valor_total,
+        SUM(res.discount) as Desconto, SUM(res.final_value) as Valor_final, ven.date as Data,cli.address as Endereço,
+        clerk.name as Vendedor, ent.name as Entregador,vei.model as Veiculo
         FROM sells ven
         JOIN cart_resume res USING(invoice)
         JOIN clients cli ON ven.client = cli.id
-        LEFT JOIN workers ent ON ven.entregador = ent.CNH
-        LEFT JOIN workers worker ON ven.worker = worker.id
+        LEFT JOIN workers ent ON ven.deliveryman = ent.CNH
+        LEFT JOIN workers clerk ON ven.clerk = clerk.id
         LEFT JOIN vehicles vei ON vei.id = ven.vehicle
         LEFT JOIN shifts tur ON tur.id = ent.shift
         WHERE tur.name = 'Noite'

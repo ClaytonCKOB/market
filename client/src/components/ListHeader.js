@@ -1,10 +1,8 @@
-const ListHeader = () => {
+const ListHeader = ({columns}) => {
     return (
-           <li className="list-header">
-            <p>Cod</p>
-            <p>Descrição</p>
-            <p>Preço</p>
-            <p>Custo</p>
+        <li className="list-header">
+        {columns?.map((column) => (
+           <p>{column}</p> ))}
         </li>);
 }
 

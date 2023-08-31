@@ -1,10 +1,9 @@
-const ListItem = ({ product }) => {
+const ListItem = ({ object }) => {
+    console.log("Object:", object);
     return (    
         <li className="list-item">
-            <p> {product.cod}</p>
-            <p> {product.description}</p>
-            <p> {product.price}</p>
-            <p> {product.cost}</p>
+            {Object.values(object).map((value) => (
+                <p>{value}</p> ))}
         </li>)
 }
 

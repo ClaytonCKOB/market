@@ -7,6 +7,9 @@ body {
   font-family: 'Trebuchet MS', Arial, sans-serif;
 }
 
+.dropdown{
+  margin: 5px auto;
+}
 .app{
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px ,rgba(0, 0, 0, 0.08) 0 0 0 1px;
@@ -81,6 +84,16 @@ footer{
   padding: 5px 10px;
 }
 
+.consults-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 90%;
+  margin: 20px auto;
+  height: 80vh;
+  overflow: hidden;
+}
 
 .app-content{
   display: flex;
