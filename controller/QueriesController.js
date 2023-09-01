@@ -92,7 +92,6 @@ module.exports = {
   },
 
   query6: async (req, res) => {
-    console.log(req.query.param);
     
     try {
       const sup = await supplier.findOne({
@@ -101,8 +100,6 @@ module.exports = {
           name: req.query.param,
         },
       });
-
-      console.log(sup);
   
       if (!sup || !sup.dataValues || sup.dataValues.id === null) {
         res.status(404).send("Supplier not found");
@@ -110,8 +107,6 @@ module.exports = {
       }
   
       const id = sup.dataValues.id;
-  
-      console.log("Supplier: ", id);
   
       const query = `SELECT suppliers.name as Nome, products.description as Produto
         FROM suppliers
