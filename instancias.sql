@@ -263,3 +263,16 @@ INSERT INTO pagamentos(metodo_pagamento, venda , valor) VALUES
 (1,2,200),
 (2,2,148),
 (7,3,330.74);
+
+
+
+
+CREATE PROCEDURE confirmation_email(IN email VARCHAR(40)
+IF email IS NOT NULL
+BEGIN
+	 EXEC msdb.dbo.sp_send_dbmail
+      @recipients = email, 
+      @subject = 'New requeriment', 
+      @body = 'It''s a new requeriment: ' + @NombreDocumento;
+
+END

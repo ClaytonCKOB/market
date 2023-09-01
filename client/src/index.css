@@ -7,9 +7,6 @@ body {
   font-family: 'Trebuchet MS', Arial, sans-serif;
 }
 
-.dropdown{
-  margin: 5px auto;
-}
 .app{
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px ,rgba(0, 0, 0, 0.08) 0 0 0 1px;
@@ -26,6 +23,13 @@ body {
   justify-content: center;
   width: 100%;
   height: 10%;
+}
+
+.querys-list-header{
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
 }
 
 .list-header{
@@ -84,7 +88,7 @@ footer{
   padding: 5px 10px;
 }
 
-.consults-container{
+.querys-container{
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -161,3 +165,43 @@ form > button{
   padding: 0;
   text-align: center;
 }
+
+
+.dropdown {
+  width: 480px;
+  position: relative;
+}
+
+.dropdown .dropdown-btn{
+  padding: 10px;
+  background: #fff;
+  box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.6);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.dropdown .dropdown-content{
+  position: absolute;
+  top: 110%;
+  left: 0;
+  padding: 15px;
+  background: #fff;
+  box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.6);
+  font-weight: bold;
+  color: #333;
+  width: 94%;
+}
+
+.dropdown .dropdown-content .dropdown-item{
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown .dropdown-content .dropdown-item:hover{
+  background: #f4f4f4;
+  transition: all 0.2s;
+}
+

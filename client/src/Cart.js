@@ -77,7 +77,7 @@ function Cart() {
     </header>
     <div className="app-content">
       <div className="list-container">
-        < ListHeader columns = {headers}/>
+        < ListHeader key={'header'} columns = {headers}/>
         {products?.map((product) => {
           console.log("Product:", product); // Log the product data
           return <ListItem key={product.cod} product={product} />;

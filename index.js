@@ -73,14 +73,11 @@ const insertData = async (sequelize) => {
             ('Mouse', 10.00, 15.00, 0, 5);
           `);
 
-    // Insert into clientes table
     await sequelize.query(`
             INSERT INTO clients (name, cpf, address, phone_number, email, credit_limit) VALUES
             ('João da Silva', '12345678901', 'Rua A, 123', '987654321', 'joao@example.com', 1500),
             ('Maria Oliveira', '98765432101', 'Avenida B, 456', '123456789', 'maria@example.com', 0);
           `);
-
-    // Insert into turnos table
     await sequelize.query(`
             INSERT INTO shifts (name, start, end) VALUES
             ('Integral', '08:00:00', '18:00:00'),
@@ -128,7 +125,6 @@ const insertData = async (sequelize) => {
         (3, 1, NOW(), 4, '12342923910', 2);
       `);
     
-      // Insert into carrinhos table
       await sequelize.query(`
         INSERT INTO carts (sell, product, quantity) VALUES
         (0, 2, 3),
@@ -153,7 +149,6 @@ const insertData = async (sequelize) => {
         (3, 7, 2);
       `);
     
-      // Insert into pagamentos table
       await sequelize.query(`
         INSERT INTO payments (payment_method, sell, value) VALUES
         (2, 0, 352.08),

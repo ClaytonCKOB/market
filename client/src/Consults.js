@@ -1,18 +1,19 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import QueriesDropDownList from "./components/QueriesDropDownList";
 import ListHeader from "./components/ListHeader";
 import ListItem from "./components/ListItem";
+import QueryForm from "./components/QueryForm";
 
 const queries = [
-  "Consulta 1",
-  "Consulta 2",
-  "Consulta 3",
-  "Consulta 4",
-  "Consulta 5",
-  "Consulta 6",
-  "Consulta 7",
-  "Consulta 8",
+  "Detalhes dos clientes",
+  "Detalhes das categorias",
+  "Vendas dos funcionarios",
+  "Vendas com mais de um método de pagamento",
+  "Produtos não vendidos",
+  "Fornecedor com os mesmos produtos",
+  "Zerar descontos de um fornecedor",
+  "Detalhes das entregas",
 ];
 
 const endpoints = [
@@ -30,40 +31,64 @@ function Consults() {
   const [selectedQuery, setSelectedQuery] = useState("Selecione uma consulta");
   const [objects, setObjects] = useState([]);
 
-  useEffect(() => {
-    if (selectedQuery !== "Selecione uma consulta") {
-      fetch(
-        "http://localhost:3050/api/queries" +
-          endpoints[queries.indexOf(selectedQuery)]
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setObjects(data);
-          console.log("Data: ", data);
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
-    }
-  }, [selectedQuery]);
+  const fetchData = (param) => {
+    const parameters = param !== "" ? ("?" +
+      new URLSearchParams({
+        param: param,
+      })) : "";
+  
+    const url =
+      "http://localhost:3050/api/queries" +
+      endpoints[queries.indexOf(selectedQuery)] +
+      parameters;
 
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setObjects(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
   return (
     <div className="app">
       <header className="app-header">
         <h1>Consultas</h1>
       </header>
-      
-      <div className="consults-container">
-        <QueriesDropDownList className="dropdown"
+      <div className="querys-container">
+        <div className="querys-list-header">
+          <QueriesDropDownList
+            key={"querys-list"}
+            className="dropdown"
             queries={queries}
             selectedQuery={selectedQuery}
             setSelectedQuery={setSelectedQuery}
-        />
+          />
+          <QueryForm
+            key={"querys-list-form"}
+            selectedQueryIndex={queries.indexOf(selectedQuery)}
+            fetchData={fetchData}
+          />
+        </div>
         <div className="list-container">
-          <ListHeader columns={objects.length > 0 ? Object.keys(objects[0]) : []} />
-          {objects?.map((object) => (
-            <ListItem key={object.id} object={object} />
-          ))}
+          <ListHeader
+            key={"querys-list-header"}
+            columns={objects.length > 0 ? Object.keys(objects[0]) : []}
+          />
+          {Array.isArray(objects) ? (
+              objects.map((object) => (
+                <ListItem key={object.id} object={object} />
+              ))
+            ) : (<div>
+              {objects.info && (
+                <p>
+                  {objects.info}
+                </p>
+              )}
+            </div>
+            )}
         </div>
       </div>
     </div>
