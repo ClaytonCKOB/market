@@ -1,6 +1,6 @@
 import React from "react";
 import{BrowserRouter, Routes, Route} from "react-router-dom";
-import Cart from "./Cart";
+import { Cart } from "./Cart";
 import Consults from "./Consults";
 
 function App() {
