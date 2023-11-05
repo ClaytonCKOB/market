@@ -17,7 +17,8 @@ module.exports = {
 
     list: async (req, res) => {
         await product.findAll().then(function(e){
-            res.send(e);
+            res.send({status:200, message:'aaaaaaaaa'});
+            // res.send(e);
         }).catch((err) => {
             console.log(err);
         })

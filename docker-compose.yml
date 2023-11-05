@@ -12,8 +12,8 @@ services:
     restart: always
     cap_add:
       - SYS_NICE
-    volumes:
-      - "./setup.sql:/docker-entrypoint-initdb.d/setup.sql"
+    # volumes:
+    #   - "./setup.sql:/docker-entrypoint-initdb.d/setup.sql"
     ports:
       - "9906:3306"
     environment:
